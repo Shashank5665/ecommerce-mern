@@ -10,9 +10,10 @@ const port = process.env.PORT || 5000;
 //----------------------------------------------------------------------------------------------------------------------
 
 //MIDDLEWARES
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+app.use("/api/user", userRoutes);
+app.use("/api/order", orderRoutes);
+app.use("/api/product", productRoutes);
+app.use("/api/cart", cartRoutes);
 
 //----------------------------------------------------------------------------------------------------------------------
 
