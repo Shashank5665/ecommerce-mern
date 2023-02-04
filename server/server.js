@@ -1,6 +1,7 @@
 const express = require("express");
 require("dotenv").config({ path: "../.env" });
 const connectDB = require("./config/db.js");
+const userRoutes = require("./routes/userRoute.js");
 
 connectDB();
 const app = express();
@@ -11,9 +12,9 @@ const port = process.env.PORT || 5000;
 
 //MIDDLEWARES
 app.use("/api/user", userRoutes);
-app.use("/api/order", orderRoutes);
-app.use("/api/product", productRoutes);
-app.use("/api/cart", cartRoutes);
+// app.use("/api/order", orderRoutes);
+// app.use("/api/product", productRoutes);
+// app.use("/api/cart", cartRoutes);
 
 //----------------------------------------------------------------------------------------------------------------------
 
