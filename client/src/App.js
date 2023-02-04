@@ -1,4 +1,7 @@
+import React from "react";
+import HomePage from "./pages/homePage";
+
 function App() {
-  return <div className="App">E-commerce Website</div>;
+  return <HomePage />;
 }
 export default App;
