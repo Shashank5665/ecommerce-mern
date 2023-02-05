@@ -4,18 +4,20 @@ const bcrypt = require("bcrypt");
 
 const protect = async (req, res, next) => {
   let token;
-
+  console.log(req.headers.authentication);
   if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
+    req.headers.authentication &&
+    req.headers.authentication.startsWith("Bearer")
   ) {
     try {
-      token = req.headers.authorization.split(" ")[1];
-
+      token = req.headers.authentication.split(" ")[1];
+      console.log(token);
       //decodes token id
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      console.log(decoded);
 
-      req.user = await User.findById(decoded.email).select("-password");
+      const user = await User.find({ email: decoded.email });
+      console.log(user);
 
       next();
     } catch (error) {
