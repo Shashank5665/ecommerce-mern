@@ -2,6 +2,8 @@ import React from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import LoginPage from "./pages/homePage";
 import ProductPage from "./pages/productPage";
+import SingleProductPage from "./pages/singleProductPage";
+import CartPage from "./pages/cartPage";
 import { useEffect } from "react";
 import axios from "axios";
 
@@ -35,7 +37,7 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<ProductPage />} />
+      <Route path="/" element={<CartPage />} />
       <Route path="/login" element={<LoginPage />} />
     </Routes>
   );

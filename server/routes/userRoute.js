@@ -6,8 +6,7 @@ const { protect } = require("../middlewares/authUser.js");
 //----------------------------------------------------------------------------------------------------------------------
 
 router.post("/signup", signupUser);
-// router.get("/viewProfile", authorize, viewProfile);
-router.post("/login", protect, loginUser);
+router.post("/login", loginUser);
 
 //----------------------------------------------------------------------------------------------------------------------
 

@@ -1,11 +1,15 @@
 const express = require("express");
 const router = express.Router();
-
+const {
+  createProduct,
+  getAllProducts,
+  getSingleProduct,
+} = require("../controllers/productController.js");
 //----------------------------------------------------------------------------------------------------------------------
 
-router.post("/", signupUser);
-router.get("/viewProfile", authorize, viewProfile);
-router.post("/login", authorize, loginUser);
+router.post("/create", createProduct);
+router.get("/all", getAllProducts);
+router.get("/:id", getSingleProduct);
 
 //----------------------------------------------------------------------------------------------------------------------
 
