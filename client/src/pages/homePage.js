@@ -1,3 +1,4 @@
+import React from "react";
 import Login from "../components/Login";
 import Signup from "../components/Signup";
 import {
@@ -9,15 +10,14 @@ import {
   Tabs,
   TabPanel,
   TabPanels,
-  Center,
 } from "@chakra-ui/react";
 
-const HomePage = () => {
+const LoginPage = () => {
   return (
     <Container maxW="xl" centerContent>
       {/* Box is just like a div in html. */}
       <Box
-        d="flex"
+        display="flex"
         justifyContent="center"
         p={3}
         bg="white"
@@ -50,4 +50,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default LoginPage;

@@ -6,6 +6,10 @@ import SingleProductPage from "./pages/singleProductPage";
 import CartPage from "./pages/cartPage";
 import { useEffect } from "react";
 import axios from "axios";
+import Success from "./pages/successPlace";
+import Layout from "./components/layout";
+import OrderPage from "./pages/orderPage";
+import CheckoutPage from "./pages/checkoutPage";
 
 function App() {
   const navigate = useNavigate();
@@ -28,6 +32,7 @@ function App() {
           navigate("/");
         })
         .catch((err) => {
+          console.log(33, err);
           navigate("/login");
         });
     } else {
@@ -37,8 +42,15 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<CartPage />} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="" element={<Layout />}>
+        <Route path="/" element={<ProductPage />} />
+        <Route path="/product/:id" element={<SingleProductPage />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/success" element={<Success />} />
+        <Route path="order" element={<OrderPage />} />
+        <Route path="checkout" element={<CheckoutPage />} />
+      </Route>
     </Routes>
   );
 }

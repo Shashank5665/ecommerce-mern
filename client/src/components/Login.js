@@ -31,9 +31,6 @@ const Login = () => {
       const config = {
         headers: {
           "Content-type": "application/json",
-          Authentication: `Bearer ${
-            JSON.parse(localStorage.getItem("userInfo")).token
-          }`,
         },
       };
       const { data } = await axios.post(
@@ -53,9 +50,10 @@ const Login = () => {
       localStorage.setItem("userInfo", JSON.stringify(data));
       navigate("/");
     } catch (error) {
+      console.log(error);
       toast({
         title: "Error Occured!",
-        description: error.response.data.message,
+        description: error?.response?.data?.message,
         status: "error",
         duration: 5000,
         isClosable: true,

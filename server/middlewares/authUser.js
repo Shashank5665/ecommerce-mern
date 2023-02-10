@@ -3,15 +3,16 @@ const User = require("../models/userModel.js");
 const bcrypt = require("bcrypt");
 
 const protect = async (req, res, next) => {
-  let token;
-  // console.log(req.headers);
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
   ) {
     try {
-      token = req.headers.authorization.split(" ")[1];
-      // console.log(token);
+      const token = req.headers.authorization.split(" ")[1];
+      if (!token) {
+        res.status(401);
+        res.json({ message: "Not authorized, no token" });
+      }
       //decodes token id
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       // console.log(decoded);
@@ -21,13 +22,8 @@ const protect = async (req, res, next) => {
       next();
     } catch (error) {
       res.status(401);
-      throw new Error("Not authorized, token failed");
+      res.json({ message: "Not authorized, token failed" });
     }
-  }
-
-  if (!token) {
-    res.status(401);
-    throw new Error("Not authorized, no token");
   }
 };
 

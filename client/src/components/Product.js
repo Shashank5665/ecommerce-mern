@@ -1,63 +1,4 @@
-// import React, { useState } from "react";
-// import "../card.css";
-// import axios from "axios";
-
-// const Product = () => {
-//   const [quantity, setQuantity] = useState(0);
-//   let price = 100,
-//     total;
-
-//   total = quantity * price;
-
-//   console.table({ price, quantity, total });
-//   const decrementQuantity = () => {
-//     if (quantity >= 1) {
-//       setQuantity(quantity - 1);
-//     }
-//   };
-
-//   const addToCart = () => {
-//     console.log("Add to cart");
-//   };
-
-//   //write a function to send the data to the server
-//   const { data } = axios.post(
-//     "/api/user/",
-//     {
-//       quantity,
-//     },
-//     {
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//     }
-//   );
-
-//   return (
-//     <>
-//       <div className="container">
-//         <h4 className="title">Mechanical keyboard</h4>
-//         <p>Keyboard with mechanical switches</p>
-//         <p className="price">Price: $100</p>
-//         <button
-//           className="changeItems"
-//           onClick={() => setQuantity(quantity + 1)}
-//         >
-//           +
-//         </button>
-//         <p className="quantity">{quantity}</p>
-//         <button className="changeItems" onClick={decrementQuantity}>
-//           -
-//         </button>
-//         <button className="cart" onClick={addToCart}>
-//           Add to cart
-//         </button>
-//       </div>
-//     </>
-//   );
-// };
-
-// export default Product;
+import React from "react";
 import {
   Box,
   Center,
@@ -72,11 +13,42 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   Button,
+  border,
 } from "@chakra-ui/react";
-const IMAGE =
-  "https://images.unsplash.com/photo-1518051870910-a46e30d9db16?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1350&q=80";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+export default function Product({ data: productData }) {
+  const [quantity, setQuantity] = React.useState(0);
+  const navigate = useNavigate();
+  const handleAddToCart = async () => {
+    const config = {
+      url: "/api/cart/add",
+      method: "POST",
+      data: { productId: productData._id, quantity },
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${
+          JSON.parse(localStorage.getItem("userInfo")).token
+        }`,
+      },
+    };
+    try {
+      console.log("add to cart");
+      const { data } = await axios(config);
+      setQuantity(0);
+      navigate("/cart");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-export default function Product() {
+  const linkStyle = {
+    textDecoration: "none",
+    color: "blue",
+    boxShadow: "0 2px 0 0 currentColor",
+    marginRight: "10px",
+  };
+
   return (
     <Center py={12}>
       <Box
@@ -85,10 +57,11 @@ export default function Product() {
         maxW={"330px"}
         w={"full"}
         bg={useColorModeValue("white", "gray.800")}
-        boxShadow={"2xl"}
+        boxShadow={"0px 4px 4px 0px rgba(0,0,0,0.2)"}
         rounded={"lg"}
         pos={"relative"}
         zIndex={1}
+        border={"1px solid lightblue"}
       >
         <Box
           rounded={"lg"}
@@ -103,7 +76,7 @@ export default function Product() {
             pos: "absolute",
             top: 5,
             left: 0,
-            backgroundImage: `url(${IMAGE})`,
+            backgroundImage: `url(${productData.imageUrl})`,
             filter: "blur(15px)",
             zIndex: -1,
           }}
@@ -118,20 +91,26 @@ export default function Product() {
             height={230}
             width={282}
             objectFit={"cover"}
-            src={IMAGE}
+            src={productData.imageUrl}
           />
         </Box>
         <Stack pt={10} align={"center"}>
           <Heading fontSize={"2xl"} fontFamily={"body"} fontWeight={500}>
-            Product Name
+            {productData.name}
           </Heading>
           <Stack direction={"row"} align={"center"}>
             <Text fontWeight={800} fontSize={"xl"}>
-              $79.99
+              ${productData.price}
             </Text>
           </Stack>
           <Stack direction={"row"} align={"center"}>
-            <NumberInput defaultValue={0} min={0} max={10}>
+            <NumberInput
+              value={quantity}
+              onChange={(_, num) => setQuantity(num)}
+              defaultValue={0}
+              min={0}
+              max={10}
+            >
               <NumberInputField />
               <NumberInputStepper>
                 <NumberIncrementStepper />
@@ -140,7 +119,23 @@ export default function Product() {
             </NumberInput>
           </Stack>
           <Stack direction={"row"} align={"center"}>
-            <Button colorScheme="green" variant="outline" width="230px">
+            <Button
+              variant={"solid"}
+              width="113px"
+              background={"blue.50"}
+              color={"blue.500"}
+              border={"1px"}
+              boxShadow="0 4px 8px 0 rgba(0,0,0,0.2)"
+            >
+              <Link to={`/product/${productData._id}`}>Visit</Link>
+            </Button>
+            <Button
+              onClick={handleAddToCart}
+              colorScheme="green"
+              variant="solid"
+              width="113px"
+              boxShadow="0 4px 8px 0 rgba(0,0,0,0.2)"
+            >
               Add to cart
             </Button>
           </Stack>

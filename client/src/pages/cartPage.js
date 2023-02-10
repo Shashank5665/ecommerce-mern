@@ -1,43 +1,171 @@
-import React from "react";
-import { Card, Image, Stack, Heading, Text, Button } from "@chakra-ui/react";
-import { CardHeader, CardBody, CardFooter } from "@chakra-ui/react";
+import React, { useEffect } from "react";
+import {
+  Card,
+  Image,
+  Stack,
+  Heading,
+  Text,
+  Button,
+  Badge,
+} from "@chakra-ui/react";
+import { CardBody, CardFooter } from "@chakra-ui/react";
+import { DeleteIcon } from "@chakra-ui/icons";
+import axios from "axios";
+import { BrowserRouter, useNavigate } from "react-router-dom";
+const CartPage = () => {
+  const navigate = useNavigate();
+  const [cartItems, setCartItems] = React.useState([]);
 
-const cartPage = () => {
+  //--------------------------------------------------------------------------------------------------------------------------------
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      const config = {
+        url: "/api/cart",
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("userInfo")).token
+          }`,
+        },
+      };
+      try {
+        const { data } = await axios(config);
+        setCartItems(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchCartItems();
+  }, []);
+  console.log("these are the items", cartItems);
+
+  //--------------------------------------------------------------------------------------------------------------------------------
+
+  const deleteItem = async (id) => {
+    const config = {
+      url: `/api/cart/remove/${id}`,
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${
+          JSON.parse(localStorage.getItem("userInfo")).token
+        }`,
+      },
+    };
+    try {
+      const cartUpdate = await axios(config);
+      setCartItems((preValue) => {
+        return {
+          ...preValue,
+          cart: preValue.cart.map((item) => {
+            if (item.productId._id === id) {
+              return { ...item, quantity: item.quantity - 1 };
+            } else {
+              return item;
+            }
+          }),
+        };
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //--------------------------------------------------------------------------------------------------------------------------------
+
+  const placeOrder = async (product, quantity) => {
+    const config = {
+      url: "/api/order/add",
+      method: "POST",
+      data: { productId: product._id, quantity: quantity },
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${
+          JSON.parse(localStorage.getItem("userInfo")).token
+        }`,
+      },
+    };
+    try {
+      const data = await axios(config);
+      console.log("------------------->", data);
+      // navigate("/success", { state: product });
+      data.data.quantity = quantity;
+      navigate("/checkout", { state: data.data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  // navigate("/success", { state: product });
+
   return (
     <div className="cartContainer">
-      <Card
-        direction={{ base: "column", sm: "row" }}
-        overflow="hidden"
-        variant="outline"
-      >
-        <Image
-          objectFit="cover"
-          maxW={{ base: "100%", sm: "200px" }}
-          src="https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60"
-          alt="Caffe Latte"
-        />
+      {cartItems?.cart?.map((item) => (
+        <Card
+          key={item?._id}
+          direction={{ base: "column", sm: "row" }}
+          overflow="hidden"
+          variant="outline"
+          style={{
+            margin: "10px",
+            boxShadow: "0 1px 1px 0 rgba(0,0,0,0.2)",
+            borderRadius: "none",
+            border: "1px solid lightblue",
+          }}
+        >
+          <Image
+            objectFit="cover"
+            maxW={{ base: "100%", sm: "200px" }}
+            minW={{ base: "100%", sm: "200px" }}
+            minH={{ base: "100%", sm: "200px" }}
+            maxH={{ base: "100%", sm: "250px" }}
+            src={item?.productId.imageUrl}
+            alt="Caffe Latte"
+            margin={"1rem"}
+            boxShadow="0 4px 8px 0 rgba(0,0,0,0.2)"
+          />
 
-        <Stack>
-          <CardBody>
-            <Heading size="md">The perfect latte</Heading>
+          <Stack>
+            <CardBody>
+              <Heading size="md">{item?.productId.name}</Heading>
 
-            <Text py="2">
-              Caffè latte is a coffee beverage of Italian origin made with
-              espresso and steamed milk.
-            </Text>
-            <Text color="blue.600" fontSize="4xl">
-              $<strong>450</strong>
-            </Text>
-          </CardBody>
-          <CardFooter>
-            <Button variant="solid" colorScheme="blue">
-              Place order
-            </Button>
-          </CardFooter>
-        </Stack>
-      </Card>
+              <Text py="2">{item?.productId.description}</Text>
+              <Text color="blue.600" fontSize="4xl">
+                $<strong>{item?.productId.price}</strong>
+              </Text>
+              <Badge variant="outline" colorScheme="green" p={2}>
+                QUANTITY: {item?.quantity}
+              </Badge>
+            </CardBody>
+            <CardFooter>
+              <Button
+                bg={"red.500"}
+                color={"white"}
+                width={"1rem"}
+                _hover={{
+                  bg: "red.600",
+                }}
+                marginRight={"0.5rem"}
+                onClick={() => deleteItem(item?.productId?._id)}
+                boxShadow="0 4px 8px 0 rgba(0,0,0,0.2)"
+              >
+                <DeleteIcon />
+              </Button>
+              <Button
+                position={"relative"}
+                variant="solid"
+                colorScheme="blue"
+                onClick={() => placeOrder(item?.productId, item?.quantity)}
+                boxShadow="0 4px 8px 0 rgba(0,0,0,0.2)"
+              >
+                Place order
+              </Button>
+            </CardFooter>
+          </Stack>
+        </Card>
+      ))}
     </div>
   );
 };
 
-export default cartPage;
+export default CartPage;

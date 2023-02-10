@@ -1,22 +1,48 @@
 const Order = require("../models/orderModel");
+const User = require("../models/userModel");
+const Product = require("../models/productModel");
 
+//--------------------------------------------------------------------------------------------------------
+
+// const placeOrder = async (req, res) => {
+//   try {
+//     const { _id } = req.user;
+//     const { productId } = req.body;
+//     const order = await User.findByIdAndUpdate(
+//       _id,
+//       {
+//         $push: { orders: { productId } },
+//         $pull: { cart: { productId } },
+//       },
+//       { new: true }
+//     );
+//     res.json(order);
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
 const placeOrder = async (req, res) => {
   try {
     const { _id } = req.user;
-    const { products, totalPrice } = req.body;
-
-    const order = new Order({
-      user: _id,
-      products,
-      totalPrice,
-    });
-
-    const newOrder = await order.save();
-    res.status(201).json(newOrder);
+    const { productId, quantity } = req.body;
+    const product = await Product.findById(productId);
+    const totalPrice = product.price * quantity;
+    const order = await User.findByIdAndUpdate(
+      _id,
+      {
+        $push: { orders: { productId, totalPrice } },
+        $pull: { cart: { productId } },
+      },
+      { new: true }
+    );
+    order.totalPrice = totalPrice;
+    res.json({ product, totalPrice });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
+
+//--------------------------------------------------------------------------------------------------------
 
 const viewOrder = async (req, res) => {
   try {
@@ -32,18 +58,22 @@ const viewOrder = async (req, res) => {
   }
 };
 
-const viewAllOrders = async (req, res) => {
+//--------------------------------------------------------------------------------------------------------
+
+const viewMyOrders = async (req, res) => {
+  const { _id } = req.user;
   try {
-    const { _id } = req.user;
-    const orders = await Order.find({ user: _id });
-    res.json(orders);
+    let data = await User.findById(_id).populate("orders.productId");
+    res.json(data.orders);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
+//--------------------------------------------------------------------------------------------------------
+
 module.exports = {
   placeOrder,
   viewOrder,
-  viewAllOrders,
+  viewMyOrders,
 };

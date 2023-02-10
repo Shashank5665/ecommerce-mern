@@ -40,7 +40,6 @@ const Signup = () => {
         },
       }
     );
-    console.log(data);
     localStorage.setItem("userInfo", JSON.stringify(data));
     toast({
       title: "Registration Successful",

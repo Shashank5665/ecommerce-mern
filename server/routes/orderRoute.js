@@ -4,16 +4,15 @@ const { protect } = require("../middlewares/authUser.js");
 const {
   placeOrder,
   viewOrder,
-  viewAllOrders,
+  viewMyOrders,
 } = require("../controllers/orderController.js");
 
 //----------------------------------------------------------------------------------------------------------------------
 
 // Order routes
-router.post("/orders", protect, placeOrder);
-router.get("/orders/:id", protect, viewOrder);
-router.get("/orders", protect, viewAllOrders);
-
+router.get("/pastOrders", protect, viewMyOrders);
+router.get("/:id", protect, viewOrder);
+router.post("/add", protect, placeOrder);
 //----------------------------------------------------------------------------------------------------------------------
 
 module.exports = router;

@@ -11,6 +11,12 @@ const userSchema = new Schema({
       quantity: { type: Number },
     },
   ],
+  orders: [
+    {
+      productId: { type: Schema.Types.ObjectId, ref: "Product" },
+      quantity: { type: Number },
+    },
+  ],
 });
 
 const User = mongoose.model("User", userSchema);

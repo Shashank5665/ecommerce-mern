@@ -50,9 +50,18 @@ const loginUser = async (req, res, next) => {
       token: generateToken(user.email),
     });
   } else {
-    res.status(401);
-    throw new Error("Invalid email or password");
+    res.status(401).json("Invalid email or password");
+  }
+};
+//----------------------------------------------------------------------------------------------------------------------
+
+const logoutUser = async (req, res, next) => {
+  try {
+    localStorage.clear();
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to logout" });
   }
 };
 
-module.exports = { signupUser, loginUser };
+module.exports = { signupUser, loginUser, logoutUser };
