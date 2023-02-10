@@ -171,7 +171,7 @@ const CartPage = () => {
                 onClick={() => checkoutOrder(item?.productId, item?.quantity)}
                 boxShadow="0 4px 8px 0 rgba(0,0,0,0.2)"
               >
-                Place order
+                checkout order
               </Button>
             </CardFooter>
           </Stack>
