@@ -15,10 +15,12 @@ import { BrowserRouter, useNavigate } from "react-router-dom";
 const CartPage = () => {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   //--------------------------------------------------------------------------------------------------------------------------------
   useEffect(() => {
     const fetchCartItems = async () => {
+      setIsLoading(true);
       const config = {
         url: "/api/cart",
         method: "GET",
@@ -34,6 +36,8 @@ const CartPage = () => {
         setCartItems(data);
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchCartItems();
@@ -69,14 +73,20 @@ const CartPage = () => {
       });
     } catch (error) {
       console.log(error);
+      setCartItems((preValue) => {
+        return {
+          ...preValue,
+          cart: preValue.cart.filter((item) => item.productId._id !== id),
+        };
+      });
     }
   };
 
   //--------------------------------------------------------------------------------------------------------------------------------
 
-  const placeOrder = async (product, quantity) => {
+  const checkoutOrder = async (product, quantity) => {
     const config = {
-      url: "/api/order/add",
+      url: "/api/order/checkout",
       method: "POST",
       data: { productId: product._id, quantity: quantity },
       headers: {
@@ -97,6 +107,9 @@ const CartPage = () => {
     }
   };
   // navigate("/success", { state: product });
+  if (isLoading) {
+    return <h1>Loading...</h1>;
+  }
 
   return (
     <div className="cartContainer">
@@ -155,7 +168,7 @@ const CartPage = () => {
                 position={"relative"}
                 variant="solid"
                 colorScheme="blue"
-                onClick={() => placeOrder(item?.productId, item?.quantity)}
+                onClick={() => checkoutOrder(item?.productId, item?.quantity)}
                 boxShadow="0 4px 8px 0 rgba(0,0,0,0.2)"
               >
                 Place order

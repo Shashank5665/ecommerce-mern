@@ -5,12 +5,14 @@ const {
   placeOrder,
   viewOrder,
   viewMyOrders,
+  checkout,
 } = require("../controllers/orderController.js");
 
 //----------------------------------------------------------------------------------------------------------------------
 
 // Order routes
 router.get("/pastOrders", protect, viewMyOrders);
+router.post("/checkout", protect, checkout);
 router.get("/:id", protect, viewOrder);
 router.post("/add", protect, placeOrder);
 //----------------------------------------------------------------------------------------------------------------------

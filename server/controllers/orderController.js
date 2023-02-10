@@ -4,23 +4,6 @@ const Product = require("../models/productModel");
 
 //--------------------------------------------------------------------------------------------------------
 
-// const placeOrder = async (req, res) => {
-//   try {
-//     const { _id } = req.user;
-//     const { productId } = req.body;
-//     const order = await User.findByIdAndUpdate(
-//       _id,
-//       {
-//         $push: { orders: { productId } },
-//         $pull: { cart: { productId } },
-//       },
-//       { new: true }
-//     );
-//     res.json(order);
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// };
 const placeOrder = async (req, res) => {
   try {
     const { _id } = req.user;
@@ -43,6 +26,21 @@ const placeOrder = async (req, res) => {
 };
 
 //--------------------------------------------------------------------------------------------------------
+
+const checkout = async (req, res) => {
+  try {
+    const { _id } = req.user;
+    const { productId, quantity } = req.body;
+    console.log(productId, quantity);
+    const product = await Product.findById(productId);
+    const totalPrice = product.price * quantity;
+    const order = await User.findById(_id);
+    order.totalPrice = totalPrice;
+    res.json({ product, totalPrice });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 const viewOrder = async (req, res) => {
   try {
@@ -76,4 +74,5 @@ module.exports = {
   placeOrder,
   viewOrder,
   viewMyOrders,
+  checkout,
 };

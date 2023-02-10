@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   FormControl,
@@ -15,21 +17,40 @@ import {
 } from "@chakra-ui/react";
 
 const CheckoutPage = () => {
+  const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [country, setCountry] = useState("");
   const [phone, setPhone] = useState("");
-  const [quantity, setQuantity] = useState(1);
   const [total, setTotal] = useState(0);
 
   const { state: order } = useLocation();
   console.log("eeeeeeeeeeeee", order);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Add code to handle the form submission
+  const placeOrder = async (e, product_id, quantity) => {
+    e.preventDefault();
+    const config = {
+      url: "/api/order/add",
+      method: "POST",
+      data: { productId: product_id, quantity: quantity },
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${
+          JSON.parse(localStorage.getItem("userInfo")).token
+        }`,
+      },
+    };
+    try {
+      const data = await axios(config);
+      console.log("------------------->", data);
+      // navigate("/success", { state: product });
+      data.data.quantity = quantity;
+      navigate("/checkout", { state: data.data });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -44,7 +65,11 @@ const CheckoutPage = () => {
           >
             Shipping information
           </Text>
-          <form onSubmit={handleSubmit}>
+          <form
+            onSubmit={(e) => {
+              placeOrder(e, order?.product._id, order.quantity);
+            }}
+          >
             <HStack>
               <FormControl>
                 <FormLabel
@@ -213,7 +238,7 @@ const CheckoutPage = () => {
                 justifyContent={"space-between"}
               >
                 <Text>Quantity</Text>
-                <Text fontWeight="bold">{order.quantity}</Text>
+                <Text fontWeight="bold">{order?.quantity}</Text>
               </HStack>
               <HStack
                 w={"100%"}
@@ -230,7 +255,7 @@ const CheckoutPage = () => {
                 justifyContent={"space-between"}
               >
                 <Text>Total</Text>
-                <Text fontWeight="bold">$ {order.totalPrice}.00</Text>
+                <Text fontWeight="bold">$ {order?.totalPrice}.00</Text>
               </HStack>
             </Box>
           </Box>
