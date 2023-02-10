@@ -29,12 +29,22 @@ const CheckoutPage = () => {
   const { state: order } = useLocation();
   console.log("eeeeeeeeeeeee", order);
 
-  const placeOrder = async (e, product_id, quantity) => {
+  const placeOrder = async (e, product_id, quantity, totalPrice) => {
     e.preventDefault();
     const config = {
       url: "/api/order/add",
       method: "POST",
-      data: { productId: product_id, quantity: quantity },
+      data: {
+        productId: product_id,
+        quantity: quantity,
+        firstName,
+        lastName,
+        address,
+        city,
+        country,
+        phone,
+        totalPrice: totalPrice,
+      },
       headers: {
         "Content-type": "application/json",
         Authorization: `Bearer ${
@@ -67,7 +77,12 @@ const CheckoutPage = () => {
           </Text>
           <form
             onSubmit={(e) => {
-              placeOrder(e, order?.product._id, order.quantity);
+              placeOrder(
+                e,
+                order?.product._id,
+                order.quantity,
+                order?.totalPrice
+              );
             }}
           >
             <HStack>
@@ -87,6 +102,7 @@ const CheckoutPage = () => {
                   id="first-name"
                   value={firstName}
                   onChange={(event) => setFirstName(event.target.value)}
+                  required={true}
                 />
               </FormControl>
               <FormControl mt={2}>
@@ -101,6 +117,7 @@ const CheckoutPage = () => {
                   id="last-name"
                   value={lastName}
                   onChange={(event) => setLastName(event.target.value)}
+                  required={true}
                 />
               </FormControl>
             </HStack>
@@ -120,6 +137,7 @@ const CheckoutPage = () => {
                 id="address"
                 value={address}
                 onChange={(event) => setAddress(event.target.value)}
+                required={true}
               />
             </FormControl>
             <HStack>
@@ -135,6 +153,7 @@ const CheckoutPage = () => {
                   id="city"
                   value={city}
                   onChange={(event) => setCity(event.target.value)}
+                  required={true}
                 />
               </FormControl>
               <FormControl mt={2}>
@@ -154,6 +173,7 @@ const CheckoutPage = () => {
                   id="country"
                   value={country}
                   onChange={(event) => setCountry(event.target.value)}
+                  required={true}
                 />
               </FormControl>
             </HStack>
@@ -170,6 +190,7 @@ const CheckoutPage = () => {
                 id="phone"
                 value={phone}
                 onChange={(event) => setPhone(event.target.value)}
+                required={true}
               />
             </FormControl>
             <Button

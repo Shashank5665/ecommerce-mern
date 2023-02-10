@@ -1,13 +1,24 @@
 const Order = require("../models/orderModel");
 const User = require("../models/userModel");
 const Product = require("../models/productModel");
+const sendEmail = require("../config/sendEmail.js");
 
 //--------------------------------------------------------------------------------------------------------
 
 const placeOrder = async (req, res) => {
   try {
     const { _id } = req.user;
-    const { productId, quantity } = req.body;
+    const {
+      productId,
+      quantity,
+      firstName,
+      lastName,
+      address,
+      city,
+      country,
+      phone,
+      total,
+    } = req.body;
     const product = await Product.findById(productId);
     const totalPrice = product.price * quantity;
     const order = await User.findByIdAndUpdate(
@@ -18,7 +29,17 @@ const placeOrder = async (req, res) => {
       },
       { new: true }
     );
-    order.totalPrice = totalPrice;
+    order.totalPrice = total;
+    await sendEmail(
+      "Highway Delight",
+      req.user.email,
+      address,
+      city,
+      country,
+      totalPrice,
+      product.name,
+      quantity
+    );
     res.json({ product, totalPrice });
   } catch (error) {
     res.status(500).json({ message: error.message });
