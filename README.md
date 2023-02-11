@@ -1,5 +1,3 @@
-# ecommerce-mern
-
 <h1> Ecommerce MERN </h1>
 
 <h2> Description </h2>
@@ -38,6 +36,12 @@
 <li> Run npm install </li>
 <code> cd ecommerce-mern </code>
 <code> npm install </code>
-<code> cd frontend </code>
+<br>
+<code> cd client </code>
 <code> npm install </code>
-<li> Create a .env file in the root directory and add the following </li>
+<br>
+<p> In root directory </p>
+RUN : <code> nodemon server.js</code>
+<br>
+<p> In client directory </p>
+RUN : <code> npm start </code>
