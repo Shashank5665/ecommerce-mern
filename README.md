@@ -40,8 +40,9 @@
 <code> cd client </code>
 <code> npm install </code>
 <br>
-<p> In root directory </p>
+<h2> How to run </h2>
+In root directory
 RUN : <code> nodemon server.js</code>
 <br>
-<p> In client directory </p>
+In client directory
 RUN : <code> npm start </code>
