@@ -91,9 +91,24 @@ const viewMyOrders = async (req, res) => {
 
 //--------------------------------------------------------------------------------------------------------
 
+const clearOrders = async (req, res) => {
+  try {
+    const { _id } = req.user;
+    const clearOrderList = await User.findByIdAndUpdate(
+      _id,
+      { $set: { orders: [] } },
+      { new: true }
+    );
+    res.json(clearOrderList);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   placeOrder,
   viewOrder,
   viewMyOrders,
   checkout,
+  clearOrders,
 };

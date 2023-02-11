@@ -82,10 +82,14 @@ const addToMyCart = async (req, res) => {
     if (existingProductIndex > -1) {
       user.cart[existingProductIndex].quantity += parseInt(quantity);
     } else {
-      // If the product is not in the cart, add it as a new item
-      user.cart.push({ productId, quantity });
+      if (quantity > 0) {
+        user.cart.push({ productId, quantity });
+      } else {
+        return res
+          .status(400)
+          .json({ success: false, error: "Invalid quantity" });
+      }
     }
-
     // Save the updated user to the database
     const updatedUser = await user.save();
 

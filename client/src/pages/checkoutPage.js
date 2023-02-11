@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Spinner } from "@chakra-ui/react";
 import {
   Box,
   FormControl,
@@ -25,12 +26,13 @@ const CheckoutPage = () => {
   const [country, setCountry] = useState("");
   const [phone, setPhone] = useState("");
   const [total, setTotal] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { state: order } = useLocation();
-  console.log("eeeeeeeeeeeee", order);
 
   const placeOrder = async (e, product_id, quantity, totalPrice) => {
     e.preventDefault();
+    setIsLoading(true);
     const config = {
       url: "/api/order/add",
       method: "POST",
@@ -55,13 +57,28 @@ const CheckoutPage = () => {
     try {
       const data = await axios(config);
       console.log("------------------->", data);
-      // navigate("/success", { state: product });
-      data.data.quantity = quantity;
-      navigate("/checkout", { state: data.data });
+      navigate("/success", { state: data.data });
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <Spinner size="xl" />
+      </div>
+    );
+  }
 
   return (
     <Flex justifyContent="space-between" alignItems="center" p={10} ml="4rem">

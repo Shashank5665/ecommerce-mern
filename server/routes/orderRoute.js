@@ -6,6 +6,7 @@ const {
   viewOrder,
   viewMyOrders,
   checkout,
+  clearOrders,
 } = require("../controllers/orderController.js");
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -13,6 +14,7 @@ const {
 // Order routes
 router.get("/pastOrders", protect, viewMyOrders);
 router.post("/checkout", protect, checkout);
+router.delete("/clearOrderList", protect, clearOrders);
 router.get("/:id", protect, viewOrder);
 router.post("/add", protect, placeOrder);
 //----------------------------------------------------------------------------------------------------------------------

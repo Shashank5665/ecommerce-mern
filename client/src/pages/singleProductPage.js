@@ -1,13 +1,15 @@
 import React, { useEffect } from "react";
 import { Card, CardHeader, CardBody, CardFooter } from "@chakra-ui/react";
-import { Heading, Text, Image, Stack, Button } from "@chakra-ui/react";
+import { Heading, Text, Image, Stack, Button, Spinner } from "@chakra-ui/react";
 import { Divider, ButtonGroup } from "@chakra-ui/react";
 import "../singleProductPageStyle.css";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 const SingleProductPage = () => {
+  const navigate = useNavigate();
   const [product, setProducts] = React.useState({});
   const { id } = useParams();
+  const [isLoading, setIsLoading] = React.useState(false);
 
   useEffect(() => {
     (async () => {
@@ -15,6 +17,62 @@ const SingleProductPage = () => {
       setProducts(data);
     })();
   }, [id]);
+
+  const handleAddToCart = async (productData, quantity) => {
+    const config = {
+      url: "/api/cart/add",
+      method: "POST",
+      data: { productId: productData._id, quantity },
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${
+          JSON.parse(localStorage.getItem("userInfo")).token
+        }`,
+      },
+    };
+    try {
+      console.log("add to cart");
+      const { data } = await axios(config);
+      navigate("/cart");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //--------------------------------------------------------------------------------------------------------------------------------
+
+  const checkoutOrder = async (product, quantity) => {
+    isLoading(true);
+
+    const config = {
+      url: "/api/order/checkout",
+      method: "POST",
+      data: { productId: product._id, quantity: quantity },
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${
+          JSON.parse(localStorage.getItem("userInfo")).token
+        }`,
+      },
+    };
+    try {
+      const data = await axios(config);
+      console.log("------------------->", data);
+      // navigate("/success", { state: product });
+      data.data.quantity = quantity;
+      navigate("/checkout", { state: data.data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  // navigate("/success", { state: product });
+  if (isLoading) {
+    return <Spinner color="red.500" />;
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------------------
+
+  console.log(product);
 
   return (
     <div className="mainContainer">
@@ -36,10 +94,18 @@ const SingleProductPage = () => {
         <Divider />
         <CardFooter>
           <ButtonGroup spacing="2">
-            <Button variant="solid" colorScheme="blue">
-              Place order
+            <Button
+              variant="solid"
+              colorScheme="blue"
+              onClick={() => checkoutOrder(product, 1)}
+            >
+              checkout
             </Button>
-            <Button variant="outline" colorScheme="blue">
+            <Button
+              variant="outline"
+              colorScheme="blue"
+              onClick={() => handleAddToCart(product, 1)}
+            >
               Add to cart
             </Button>
           </ButtonGroup>
