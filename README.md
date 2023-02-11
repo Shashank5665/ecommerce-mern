@@ -33,7 +33,7 @@
 
 <li> Clone the repository </li>
 <code> git clone https://github.com/Shashank5665/ecommerce-mern.git </code>
-<br>
+<p>
 <li> Run npm install </li>
 <code> cd ecommerce-mern </code>
 <code> npm install </code>
