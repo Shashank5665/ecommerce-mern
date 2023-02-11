@@ -7,6 +7,7 @@ const Layout = () => {
   const mystyle = {
     color: "white",
     borderBottom: "1px solid white",
+    fontSize: "1.1rem",
   };
 
   const mystyle2 = {
@@ -38,13 +39,13 @@ const Layout = () => {
           My orders{" "}
         </Link>
         <Button
-          style={mystyle}
           colorScheme="facebook"
           variant="solid"
           p={5}
           w={150}
           color="white"
           onClick={logout}
+          boxShadow="md"
         >
           Logout
         </Button>
