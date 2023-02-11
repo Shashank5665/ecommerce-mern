@@ -40,6 +40,7 @@
 <code> cd client </code>
 <code> npm install </code>
 <br>
+<li> Create a .env file in root directory and copy the content from the env_file.txt present in root directory into the .env file </li>
 <h2> How to run </h2>
 In root directory
 RUN : <code> nodemon server.js</code>
