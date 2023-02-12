@@ -50,3 +50,4 @@ In client directory
 RUN : <code> npm start </code>
 
 <h2> Screenshots</h2>
+![alt text](https://github.com/Shashank5665/ecommerce-mern/blob/main/screenshots/image.png?raw=true)
