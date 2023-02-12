@@ -50,6 +50,5 @@ In client directory
 RUN : <code> npm start </code>
 
 <h2> Screenshots</h2>
-![image](https://user-images.githubusercontent.com/73271539/218297301-27347081-0de3-4925-bdfb-90f1daea9baa.png)
 
 
