@@ -48,3 +48,7 @@ RUN : <code> nodemon server.js</code>
 <br>
 In client directory
 RUN : <code> npm start </code>
+
+<h2> Screenshots</h2>
+![Screenshot (128)](https://user-images.githubusercontent.com/73271539/218296874-3ab20cf4-c6e4-4668-9b17-f738ee9169bd.png)
+
