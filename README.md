@@ -50,5 +50,5 @@ In client directory
 RUN : <code> npm start </code>
 
 <h2> Screenshots</h2>
-![Screenshot (127)](https://user-images.githubusercontent.com/73271539/218297156-ef446495-1644-47d1-8edf-5de42dc49a18.png)
+<img src="/screenshots/Screenshot (127).png">
 
