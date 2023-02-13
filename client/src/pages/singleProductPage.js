@@ -42,7 +42,7 @@ const SingleProductPage = () => {
   //--------------------------------------------------------------------------------------------------------------------------------
 
   const checkoutOrder = async (product, quantity) => {
-    isLoading(true);
+    setIsLoading(true);
 
     const config = {
       url: "/api/order/checkout",
@@ -63,6 +63,8 @@ const SingleProductPage = () => {
       navigate("/checkout", { state: data.data });
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
   // navigate("/success", { state: product });
