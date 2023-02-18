@@ -7,12 +7,16 @@ import { VStack } from "@chakra-ui/layout";
 import axios, * as others from "axios";
 
 const Signup = () => {
+  //----------------------------------------------------------------------------------------------------------------------
+  //State variables goes here
+
   const toast = useToast();
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [confirmpassword, setConfirmpassword] = useState();
   const [password, setPassword] = useState();
 
+  //----------------------------------------------------------------------------------------------------------------------
   //Functions goes here
   const submitHandler = async () => {
     if (!name || !email || !password || !confirmpassword) {

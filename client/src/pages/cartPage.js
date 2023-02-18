@@ -11,7 +11,7 @@ import {
 import { CardBody, CardFooter } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 import axios from "axios";
-import { BrowserRouter, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const CartPage = () => {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = React.useState([]);

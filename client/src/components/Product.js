@@ -1,4 +1,4 @@
-import React from "react";
+import { React, useState } from "react";
 import {
   Box,
   Center,
@@ -17,9 +17,16 @@ import {
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+
+//----------------------------------------------------------------------------------------------------------------------
+
 export default function Product({ data: productData }) {
-  const [quantity, setQuantity] = React.useState(0);
+  const [quantity, setQuantity] = useState(0);
   const navigate = useNavigate();
+
+  //----------------------------------------------------------------------------------------------------------------------
+  //FUNCTIONS
+
   const handleAddToCart = async () => {
     const config = {
       url: "/api/cart/add",

@@ -9,11 +9,16 @@ import { VStack } from "@chakra-ui/layout";
 import axios from "axios";
 
 const Login = () => {
+  //----------------------------------------------------------------------------------------------------------------------
+  //STATE VARIABLES
+
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const toast = useToast();
-
   const navigate = useNavigate();
+
+  //----------------------------------------------------------------------------------------------------------------------
+  //FUNCTIONS
 
   const submitHandler = async () => {
     if (!email || !password) {
