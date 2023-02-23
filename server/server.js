@@ -27,4 +27,4 @@ app.use("/api/order", orderRoutes);
 
 //----------------------------------------------------------------------------------------------------------------------
 
-app.listen(2700, () => console.log(`Server started on port ${port}`));
+app.listen(port, () => console.log(`Server started on port ${port}`));
