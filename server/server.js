@@ -1,5 +1,5 @@
 const express = require("express");
-require("dotenv").config({ path: "../.env" });
+require("dotenv").config({ path: "./.env" });
 const connectDB = require("./config/db.js");
 const userRoutes = require("./routes/userRoute.js");
 const verifyRoutes = require("./routes/verifyRoute.js");
