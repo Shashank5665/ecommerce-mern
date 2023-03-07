@@ -1,4 +1,4 @@
-<h1><i><a href="https://eshoppin.netlify.app">Ecommerce MERN</a></i></h1>
+<h1><i><a target="_blank" href="https://eshoppin.netlify.app">Ecommerce MERN</a></i></h1>
 
 <h2> Description </h2>
 
