@@ -12,6 +12,7 @@ import { CardBody, CardFooter } from "@chakra-ui/react";
 
 import axios from "axios";
 import { useState } from "react";
+import { BASE_URL } from "../services/helper";
 const OrderPage = () => {
   //FUNCTIONS
   const [orders, setOrders] = useState([]);
@@ -23,7 +24,7 @@ const OrderPage = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       const config = {
-        url: "/api/order/pastOrders",
+        url: `${BASE_URL}/api/order/pastOrders`,
         method: "GET",
         headers: {
           "Content-type": "application/json",
@@ -44,7 +45,7 @@ const OrderPage = () => {
 
   const clearOrderList = async () => {
     const config = {
-      url: "/api/order/clearOrderList",
+      url: `${BASE_URL}/api/order/clearOrderList`,
       method: "DELETE",
       headers: {
         "Content-type": "application/json",

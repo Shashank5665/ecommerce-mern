@@ -16,6 +16,7 @@ import {
   flexbox,
   Center,
 } from "@chakra-ui/react";
+import { BASE_URL } from "../services/helper";
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ const CheckoutPage = () => {
     e.preventDefault();
     setIsLoading(true);
     const config = {
-      url: "/api/order/add",
+      url: `${BASE_URL}/api/order/add`,
       method: "POST",
       data: {
         productId: product_id,

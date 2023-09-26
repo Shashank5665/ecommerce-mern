@@ -12,6 +12,7 @@ import { CardBody, CardFooter } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../services/helper";
 const CartPage = () => {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = React.useState([]);
@@ -22,7 +23,7 @@ const CartPage = () => {
     const fetchCartItems = async () => {
       setIsLoading(true);
       const config = {
-        url: "/api/cart",
+        url: `${BASE_URL}/api/cart`,
         method: "GET",
         headers: {
           "Content-type": "application/json",
@@ -48,7 +49,7 @@ const CartPage = () => {
 
   const deleteItem = async (id) => {
     const config = {
-      url: `/api/cart/remove/${id}`,
+      url: `${BASE_URL}/api/cart/remove/${id}`,
       method: "DELETE",
       headers: {
         "Content-type": "application/json",
@@ -86,7 +87,7 @@ const CartPage = () => {
 
   const checkoutOrder = async (product, quantity) => {
     const config = {
-      url: "/api/order/checkout",
+      url: `${BASE_URL}/api/order/checkout`,
       method: "POST",
       data: { productId: product._id, quantity: quantity },
       headers: {

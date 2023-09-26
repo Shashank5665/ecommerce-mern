@@ -5,6 +5,7 @@ import { Divider, ButtonGroup } from "@chakra-ui/react";
 import "../singleProductPageStyle.css";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { BASE_URL } from "../services/helper";
 const SingleProductPage = () => {
   const navigate = useNavigate();
   const [product, setProducts] = React.useState({});
@@ -13,7 +14,7 @@ const SingleProductPage = () => {
 
   useEffect(() => {
     (async () => {
-      const { data } = await axios.get(`/api/products/${id}`);
+      const { data } = await axios.get(`${BASE_URL}/api/products/${id}`);
       setProducts(data);
     })();
   }, [id]);

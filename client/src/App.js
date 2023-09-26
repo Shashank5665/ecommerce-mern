@@ -10,6 +10,7 @@ import Success from "./pages/successPlace";
 import Layout from "./components/layout";
 import OrderPage from "./pages/orderPage";
 import CheckoutPage from "./pages/checkoutPage";
+import { BASE_URL } from "./services/helper";
 
 function App() {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ function App() {
         },
       };
       axios
-        .get("/api/user/verify", config)
+        .get(`${BASE_URL}/api/user/verify`, config)
         .then((res) => {
           navigate("/");
         })

@@ -17,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { BASE_URL } from "../services/helper";
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -29,7 +30,7 @@ export default function Product({ data: productData }) {
 
   const handleAddToCart = async () => {
     const config = {
-      url: "/api/cart/add",
+      url: `${BASE_URL}/api/cart/add`,
       method: "POST",
       data: { productId: productData._id, quantity },
       headers: {

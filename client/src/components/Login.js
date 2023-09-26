@@ -7,6 +7,7 @@ import { Input, InputGroup, InputRightElement } from "@chakra-ui/input";
 import { useToast } from "@chakra-ui/toast";
 import { VStack } from "@chakra-ui/layout";
 import axios from "axios";
+import { BASE_URL } from "../services/helper";
 
 const Login = () => {
   //----------------------------------------------------------------------------------------------------------------------
@@ -39,7 +40,7 @@ const Login = () => {
         },
       };
       const { data } = await axios.post(
-        "/api/user/login",
+        `${BASE_URL}/api/user/login`,
         { email, password },
         config
       );
