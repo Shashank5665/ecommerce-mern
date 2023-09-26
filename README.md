@@ -1,4 +1,4 @@
-<h1> Ecommerce MERN </h1>
+<h1><i><a href="https://eshoppin.netlify.app" target="_blank" rel="noopener noreferrer">Ecommerce MERN</a></i></h1>
 
 <h2> Description </h2>
 
